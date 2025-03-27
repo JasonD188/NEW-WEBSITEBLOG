@@ -1,0 +1,302 @@
+<!--hindi pato yung final bale wala pa siyang smoth scrooling bale gagawa pa tyo ng animation para sa scrolling ng site na to para sa homepage 
+yung ibang link like food menu babaguhin payon medyo kapos lang sa oras bale yung iibahin nlng foodmenu recipe tsaka about us-->
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="./framestyle/home.style.css">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    </head>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    const commentForm = document.querySelector(".form-comment");
+    const commentList = document.querySelector(".comments-list");
+    const COMMENT_LIMIT = 40;
+    const REPLY_LIMIT = 30;
+
+    commentForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const name = document.querySelector(".nme").value.trim();
+        const email = document.querySelector(".emil").value.trim();
+        const message = document.querySelector(".textarea").value.trim();
+
+        if (name === "" || email === "" || message === "") {
+            alert("Please fill in all fields before submitting.");
+            return;
+        }
+
+        if (message.length > COMMENT_LIMIT) {
+            alert(`Comment must be ${COMMENT_LIMIT} characters or less.`);
+            return;
+        }
+
+        const emailHash = CryptoJS.MD5(email.trim().toLowerCase()).toString(CryptoJS.enc.Hex);
+        const avatarUrl = `https://www.gravatar.com/avatar/${emailHash}?s=200&d=identicon`;
+
+        const date = new Date();
+        const formattedDate = `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })}, ${date.getFullYear()}`;
+
+        const commentBox = document.createElement("div");
+        commentBox.classList.add("comment-box", "teal");
+        commentBox.innerHTML = `
+            <img src="${avatarUrl}" alt="User Avatar" class="avatar">
+            <div>
+                <p class="comment-user">${name}<span class="comment-date"> - ${formattedDate}</span></p>
+                <p class="comment-text">${message}</p>
+                <button class="reply-btn">Reply</button>
+                <button class="react-btn">👍</button>
+                <span class="like-count">0</span>
+                <button class="reactt-btn">❤️</button>
+                <span class="heart-count">0</span>
+                <div class="reply-form" style="display:none;">
+                    <textarea rows="2" placeholder="Write a reply... (Max ${REPLY_LIMIT} chars)"></textarea>
+                    <button class="submit-reply">Send Reply</button>
+                </div>
+            </div>
+        `;
+
+        commentList.prepend(commentBox);
+        commentForm.reset();
+
+        const replyButton = commentBox.querySelector(".reply-btn");
+        const replyForm = commentBox.querySelector(".reply-form");
+        const submitReplyButton = commentBox.querySelector(".submit-reply");
+
+        replyButton.addEventListener("click", function () {
+            replyForm.style.display = replyForm.style.display === "none" ? "block" : "none";
+        });
+
+        submitReplyButton.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const replyMessage = replyForm.querySelector("textarea").value.trim();
+
+            if (replyMessage === "") {
+                alert("Please enter a reply before submitting.");
+                return;
+            }
+
+            if (replyMessage.length > REPLY_LIMIT) {
+                alert(`Reply must be ${REPLY_LIMIT} characters or less.`);
+                return;
+            }
+
+            const replyBox = document.createElement("div");
+            replyBox.classList.add("reply-box");
+            replyBox.innerHTML = `<p><strong>${name}:</strong> ${replyMessage}</p>`;
+
+            commentBox.appendChild(replyBox);
+            replyForm.querySelector("textarea").value = "";
+            replyForm.style.display = "none";
+        });
+
+        const reactButton = commentBox.querySelector(".react-btn");
+        const likeCount = commentBox.querySelector(".like-count");
+        const reacttButton = commentBox.querySelector(".reactt-btn");
+        const heartCount = commentBox.querySelector(".heart-count");
+
+        reactButton.addEventListener("click", function () {
+            let currentLikes = parseInt(likeCount.textContent);
+            likeCount.textContent = currentLikes + 1;
+        });
+
+        reacttButton.addEventListener("click", function () {
+            let currentHeart = parseInt(heartCount.textContent);
+            heartCount.textContent = currentHeart + 1;
+        });
+    });
+});
+
+    </script>
+    <body>
+        <nav class="navbar">
+            <ul class="navbar-list">
+                <li><a href="./MENU.html"class="navbar-link">HOME</a></li>
+                <li><a href="./MENU.html"class="navbar-link">FOOD MENU</a></li>
+                <li><a href="./BLOG.html"class="navbar-link">BLOG</a></li>
+                <li><a href="./RECIPE.html"class="navbar-link">RECIPE</a></li>
+                <li><a href="./ABOUT.html"class="navbar-link">ABOUT</a></li>
+                <li><a href="./CONTACT.html"class="navbar-link">CONTACT</a></li>
+            </ul>
+        </nav>
+        <header class="header">
+            <div class="header-container">
+            <div class="logo">
+                <img src="./pictureshome/LOGO.jpg" alt="Sherap's Logo"class="logo-img">
+            </div>
+            <h1 class="header-title">SHERAP'S HOMADE KITCHENETTE LAMBAKIN</h1>
+            </div>
+        </header>
+            <section class="content-section">
+                <div id="hel"class="content-card">
+                    <img src="./pictureshome/SNACKS.jpg" alt="Snacks"class="content-img">
+                    <h2 class="content-title">SNAKCS</h2>
+                </div>
+                <div id="helo"class="content-card">
+                    <img src="./pictureshome/MEAL.jpg" alt="Meals"class="content-img">
+                    <h2 class="content-title">MEALS</h2>
+                </div>
+                <div id="desrt"class="content-card">
+                    <img src="./pictureshome/DESSERT.jpg" alt="Desserts & Beverages"class="content-img">
+                    <h2 class="content-title">DESSERTS & BEVERAGES</h2>
+                </div>
+            </section>
+            <section class="recipey">
+                <div class="recipeyy">
+            <div class="recipe-gallery">
+                <div class="recipe">
+                    <img src="./pictureshome/SNACKS.jpg" alt="Healthy Dish">
+                    <button class="category">SNACKS</button>
+                </div>
+                <div class="recipe">
+                    <img src="./pictureshome/MEAL.jpg" alt="Bowls Dish">
+                    <button class="category">MEALS</button>
+                </div>
+                <div class="recipe">
+                    <img src="./pictureshome/DESSERT.jpg" alt="Most Popular">
+                    <button class="category">DESSERTS & BEVERAGES</button>
+                </div>
+                <div class="recipe">
+                    <img src="./picturesblog/main.jpg" alt="Vegetarian">
+                    <button class="category">MOST POPULAR</button>
+                </div>
+            </div>
+            <div class="filters">
+                <button onclick="location.href='./RECIPE.html'">ADOBO</button>
+                <button onclick="location.href='./RECIPE.html'">ADOBO</button>
+                <button onclick="location.href='./RECIPE.html'">ADOBO</button>
+                <button onclick="location.href='./RECIPE.html'">ADOBO</button>
+                <button onclick="location.href='./RECIPE.html'">ADOBO</button>
+                <button onclick="location.href='./RECIPE.html'">ADOBO</button>
+                <button onclick="location.href='./RECIPE.html'">ADOBO</button>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search our recipes">
+                <button>VIEW ALL RECIPES</button>
+                
+            </div>
+    </div>
+    <div class="footeer">
+    <div class="containerr">
+        <div class="social-media">
+            <p>FOLLOW US</p>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-pinterest"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+
+
+            <div class="signup-container">
+                <h2>Signup</h2> <span>FOR CHATBOT</span>
+                <p></p>
+                <div class="form-group">
+                    <input type="text"id="name" placeholder="First Name">
+                    <input type="email"id="email" placeholder="Email">
+                    <button onclick="showChatbot()">GO</button>
+                </div>
+                <!--live chat ai bot bale gagamit lng tyo ng tidio -->
+                <div class="chatbot-container"id="chatbot">
+                    <div class="chatbot-header">
+                        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712037.png" alt="Chatbot Icon">
+                        Chatbot
+                    </div>
+                    <div class="chatbot-body">
+                        <div class="chatbot-message">Hello! How can I help you?</div>
+                        <div class="chatbot-message chatbot-user">I need assistance.</div>
+                        <div class="chatbot-message">Sure! What do you need help with?</div>
+                    </div>
+                    <div class="chatbot-footer">
+                        <input type="text" placeholder="Type a message...">
+                        <button>&uarr;</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </section>
+        <div class="containerr">
+            <div class="about-section">
+                <div class="text-content">
+                    <h2>HI! </h2>
+                    <p class="intro">nice to meet you!</p>
+                    <p class="own">I'm a Ralph Gomez Owner of Business</p>
+                    <!--sa learnmore is sa about us yan iibahin din yung style neto-->
+                    <button class="learn-more">LEARN MORE</button>
+                </div>
+                <div class="image-content">
+                    <img src="./pictureshome/owener.jpg" alt="Cooking">
+                    <img src="./pictureshome/oweeener.jpg" alt="Pouring oil">
+                </div>
+            </div>
+        </div>
+        </div>
+
+        
+        <div class="contai-ner">
+            <!-- Comments Section -->
+            <h2 class="titleee">Comments</h2>
+
+            <div class="comments-grid">  
+                <div class="comments-list">
+                
+            </div>
+                <!-- Comment Form -->
+                <div class="comment-form">
+                    <h3 class="form-title">Leave a comment</h3>
+                    
+                    <form action="#"class="form-comment">
+                        <div>
+                            <label>Message</label>
+                            <textarea rows="3" class="textarea"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label>Name</label>
+                            <input type="text"class="nme">
+                        </div>
+
+                        <div>
+                            <label>Email</label>
+                            <input type="email"class="emil">
+                        </div>
+
+                        <button type="submit"class="post-comment">Post Comment</button>
+                    </form>
+                </div>
+            </div>        
+        </div>
+        
+            <footer class="footer">
+                <div class="footer-left">
+                    <div class="contact-info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p class="loc">BLk 15 Lot 52 Ph.2 North Ville 4 Brgy, Marilao, 3019 Bulacan PHILIPPHINES</p>
+                    
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-phone-alt"></i>
+                        <p>099292972952</p> 
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-envelope"></i>
+                        <p><a href="./CONTACT.html" style="color: #4da6ff;">support@Business</a></p> <!--kapag clinick mo mapupunta ka sa contacts or gagawa nlng tyo ng bagong site-->
+                    </div>
+                </div>
+        
+                <div class="footer-right">
+                    <h3>About the Business</h3>
+                    <p>At Sherap's Homemade Kitchenette Lambakin, we bring the warmth of home-cooked Filipino meals to your table. Our passion for authentic flavors, fresh ingredients, and traditional recipes is at the heart of everything we do. </p>
+                </div>
+        </footer>
+        
+            
+            
+
+    </body>
+    </html>
